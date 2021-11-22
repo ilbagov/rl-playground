@@ -34,11 +34,17 @@ class VanillaMultiArmedBandit:
         Simulates one round of the hidden process
         in which the bandit chooses an arm and samples its reward
         """
-        chosen_arm_idx = random.choice(range(self.n_arms))
+        chosen_arm_idx = self._choose_arm()
         chosen_arm = arms[chosen_arm_idx]
         self.rewards[chosen_arm_idx] += chosen_arm.rvs()
         self.rounds_played += 1
         self.mean_rewards = self.rewards/self.rounds_played
+
+    def _choose_arm(self):
+        """
+        Greedely chooses an arm to pull
+        """
+        return random.choice(range(self.n_arms))
 
     def reset_rounds(self) -> None:
         """

@@ -1,9 +1,5 @@
 import random
 
-from typing import List
-
-from scipy.stats import rv_discrete
-
 from playground.vanilla_mab import VanillaMultiArmedBandit
 
 
@@ -20,10 +16,10 @@ class EpsilonGreedyMAB(VanillaMultiArmedBandit):
     def __repr__(self) -> str:
         return f"EpsilonGreedyMAB(n_arms={self.n_arms})"
 
-    def play_round(self, arms: List[rv_discrete]) -> None:
+    def _choose_arm(self):
         """
-        Simulates a round using an epsilon-greedy
-        approach
+        Chooses an arm to pull
+        using an epsilon-greedy strategy
         """
         prob = random.random()  # sample from [0, 1)
 
@@ -32,7 +28,4 @@ class EpsilonGreedyMAB(VanillaMultiArmedBandit):
         else:  # exploit
             chosen_arm_idx = self.mean_rewards.argmax()
 
-        chosen_arm = arms[chosen_arm_idx]
-        self.rewards[chosen_arm_idx] += chosen_arm.rvs()
-        self.rounds_played += 1
-        self.mean_rewards = self.rewards/self.rounds_played
+        return chosen_arm_idx
